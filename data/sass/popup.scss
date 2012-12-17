@@ -1,0 +1,127 @@
+/*! Copyright (C) 2012 Ohso Ltd
+
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements. You may obtain a
+copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+*/
+@import "compass/reset";
+@import "compass/css3";
+
+// #77216f or #5e2750 or #b53e7e
+$purple: #792354;
+$orange: #f15d22;
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @include border-radius(10px);
+}
+
+::-webkit-scrollbar-thumb {
+    @include border-radius(10px);
+    background: #ccc;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: #eee;
+}
+html { font-size: 12px; }
+body {
+  font-family: "Ubuntu", "Helvetica Neue","Helvetica","Arial",sans-serif;
+  //width: 448px;
+  min-height: 512px;
+  color: #555;
+}
+h3 { font-size: 16px; }
+a {
+  text-decoration: none;
+  color: $purple;
+}
+a:hover {
+  text-decoration: underline;
+}
+.right {
+  float: right;
+}
+.hide {
+  display: none;
+}
+.popup-header {
+  height: 32px;
+  padding: 0 12px;
+  margin: .5rem 0;
+  background: $purple;
+  position: relative;
+  .logo {
+    outline: none;
+    img {
+      position: absolute;
+      top: -8px;
+    }
+  }
+  .refresh {
+    outline: none;
+    font-size: 24px;
+    color: white;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    margin-top: -12px;
+    &:hover { text-decoration: none; }
+  }
+}
+
+.latest-news {
+  article {
+    border-bottom: 1px dotted #ddd;
+    padding: 1rem 1rem .5rem;
+    h3 {
+      line-height: 18px;
+    }
+    .icon-bookmark {
+      color: $orange;
+    }
+    p {
+      padding: 8px 0;
+      line-height: 16px;
+    }
+    footer {
+      .read-more {
+        text-transform: uppercase;
+      }
+      .social-links {
+        float: right;
+        font-size: 20px;
+        line-height: 12px;
+        a {
+          text-decoration: none;
+        }
+        a:hover { opacity: 0.8 }
+        .icon-facebook-sign { color: #3b5998 }
+        .icon-twitter-sign { color: #00a0d1 }
+      }
+    }
+  }
+  margin-bottom: 2.5rem;
+}
+
+
+.popup-footer {
+  @include background-image(linear-gradient(rgba(255,255,255,0), rgba(255,255,255,.25) 30%, white 50%, white));
+  text-transform: uppercase;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 18px 6px 6px 12px;
+}

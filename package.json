@@ -1,0 +1,10 @@
+{
+  "id": "omgubuntufirefox@omgubuntu.co.uk",
+  "name": "omg_ubuntu",
+  "license": "Apache 2.0",
+  "author": "Ohso",
+  "version": "0.1",
+  "fullName": "OMG! Ubuntu! Firefox Extension",
+  "description": "a basic add-on",
+  "dependencies": ["toolbarbutton"]
+}
