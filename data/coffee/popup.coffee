@@ -30,11 +30,22 @@ if typeof localStorage['pollInterval'] is 'undefined'
 omgApp = angular.module 'omgApp', ['omgUtil']
 
 omgApp.controller 'popupCtrl', ['$scope', 'databaseService', 'Articles', 'LocalStorage', 'Badge', ($scope, databaseService, Articles, LocalStorage, Badge) ->
+  getArticlesOnTimeout = () ->
+    setTimeout () ->
+      databaseService.open().then (event) ->
+        Articles.getLatestArticles().then () ->
+          Articles.getArticles().then (articles) ->
+            Badge.notify()
+            $scope.latestArticles = articles
+            getArticlesOnTimeout()
+    ,localStorage['pollInterval']
+
   databaseService.open().then (event) ->
     Articles.getArticles().then (articles) ->
       Badge.notify()
       $scope.latestArticles = articles
-      Articles.getArticlesOnTimeout()
+      getArticlesOnTimeout()
+
 
   $scope.markAsRead = (index) ->
     if $scope.latestArticles[index].unread is true
@@ -152,18 +163,8 @@ omgUtil.service 'Articles', ['$q', '$rootScope', 'LocalStorage', 'databaseServic
         deferred.resolve articles
     deferred.promise
 
-  getArticlesOnTimeout = () ->
-    setTimeout () ->
-      console.log 'Timeout running!'
-      databaseService.open().then (event) ->
-        getLatestArticles().then () ->
-          getArticles().then () ->
-            getArticlesOnTimeout()
-    ,localStorage['pollInterval']
-
   {
     getArticles: getArticles
-    getArticlesOnTimeout: getArticlesOnTimeout
     getLatestArticles: getLatestArticles
   }
 ]

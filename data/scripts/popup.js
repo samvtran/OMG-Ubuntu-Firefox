@@ -41,11 +41,26 @@ under the License.
 
   omgApp.controller('popupCtrl', [
     '$scope', 'databaseService', 'Articles', 'LocalStorage', 'Badge', function($scope, databaseService, Articles, LocalStorage, Badge) {
+      var getArticlesOnTimeout;
+      getArticlesOnTimeout = function() {
+        return setTimeout(function() {
+          console.log('Timeout running!');
+          return databaseService.open().then(function(event) {
+            return Articles.getLatestArticles().then(function() {
+              return Articles.getArticles().then(function(articles) {
+                Badge.notify();
+                $scope.latestArticles = articles;
+                return getArticlesOnTimeout();
+              });
+            });
+          });
+        }, localStorage['pollInterval']);
+      };
       databaseService.open().then(function(event) {
         return Articles.getArticles().then(function(articles) {
           Badge.notify();
           $scope.latestArticles = articles;
-          return Articles.getArticlesOnTimeout();
+          return getArticlesOnTimeout();
         });
       });
       $scope.markAsRead = function(index) {
@@ -129,7 +144,7 @@ under the License.
 
   omgUtil.service('Articles', [
     '$q', '$rootScope', 'LocalStorage', 'databaseService', function($q, $rootScope, LocalStorage, databaseService) {
-      var getArticles, getArticlesOnTimeout, getLatestArticles, _addArticle, _getArticlesFromDatabase;
+      var getArticles, getLatestArticles, _addArticle, _getArticlesFromDatabase;
       getLatestArticles = function() {
         var deferred, promises;
         deferred = $q.defer();
@@ -220,21 +235,8 @@ under the License.
         };
         return deferred.promise;
       };
-      getArticlesOnTimeout = function() {
-        return setTimeout(function() {
-          console.log('Timeout running!');
-          return databaseService.open().then(function(event) {
-            return getLatestArticles().then(function() {
-              return getArticles().then(function() {
-                return getArticlesOnTimeout();
-              });
-            });
-          });
-        }, localStorage['pollInterval']);
-      };
       return {
         getArticles: getArticles,
-        getArticlesOnTimeout: getArticlesOnTimeout,
         getLatestArticles: getLatestArticles
       };
     }
