@@ -1,9 +1,9 @@
 ###
 Copyright (C) 2012 Ohso Ltd
 
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements. You may obtain a
-copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
   http://www.apache.org/licenses/LICENSE-2.0
 
@@ -135,13 +135,15 @@ omgUtil.service 'Articles', ['$q', '$rootScope', 'LocalStorage', 'databaseServic
   _getArticlesFromDatabase = () ->
     deferred = $q.defer()
     articles = []
+    totalCount = 0
     objectStore = db.transaction(['articles'], 'readonly').objectStore('articles')
     objectStore.openCursor(null, "prev").onsuccess = (event) ->
       cursor = event.target.result
       if cursor
+        totalCount++
         if articles.length < 20
           articles.push cursor.value
-        else
+        else if totalCount > 30
           if cursor.value.unread is true
             LocalStorage.decrement()
           db.transaction(['articles'], 'readwrite').objectStore('articles').delete(cursor.key)
