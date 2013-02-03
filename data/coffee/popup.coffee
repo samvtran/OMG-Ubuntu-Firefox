@@ -46,7 +46,6 @@ omgApp.controller 'popupCtrl', ['$scope', 'databaseService', 'Articles', 'LocalS
       $scope.latestArticles = articles
       getArticlesOnTimeout()
 
-
   $scope.markAsRead = (index) ->
     if $scope.latestArticles[index].unread is true
       LocalStorage.decrement()
@@ -115,7 +114,11 @@ omgUtil.service 'Articles', ['$q', '$rootScope', 'LocalStorage', 'databaseServic
           unread: true
         addArticle = _addArticle(articleObj)
         promises.push addArticle
-      $q.all(promises).then () ->
+      $q.all(promises).then (article) ->
+        self.port.emit 'notification',
+          count: LocalStorage.get()
+          title: article[0].title
+          link: article[0].link
         deferred.resolve()
     deferred.promise
 
@@ -125,7 +128,7 @@ omgUtil.service 'Articles', ['$q', '$rootScope', 'LocalStorage', 'databaseServic
     addArticle.onsuccess = (event) ->
       LocalStorage.increment()
       $rootScope.$apply () ->
-        deferred.resolve()
+        deferred.resolve(articleObj)
     addArticle.onerror = (event) ->
       $rootScope.$apply () ->
         deferred.resolve()
@@ -198,13 +201,14 @@ omgUtil.filter 'uriEncode', () -> (input) ->
 omgUtil.service 'Badge', [->
   notify = () ->
     self.port.emit 'updateBadge', localStorage['unread']
-
   {
     notify: notify
   }
 ]
 
 omgUtil.service 'LocalStorage', ['Badge', (Badge)->
+  get = () ->
+    localStorage['unread']
   increment = () ->
     localStorage['unread'] = parseInt(localStorage['unread']) + 1
     Badge.notify()
@@ -217,6 +221,7 @@ omgUtil.service 'LocalStorage', ['Badge', (Badge)->
     Badge.notify()
 
   {
+    get: get
     increment: increment
     decrement: decrement
     reset: reset

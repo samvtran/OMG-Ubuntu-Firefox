@@ -21,7 +21,7 @@ tabs = require 'tabs'
 self = require 'self'
 data = require('self').data
 request = require('request').Request
-
+notifications = require 'sdk/notifications'
 popup = require('panel').Panel
   width: 464
   height: 512
@@ -53,14 +53,22 @@ popup.port.on 'getArticles', (feedUrl) ->
   .get()
 
 popup.port.on 'updateBadge', (unread) ->
-  #console.log "updating badge"
   if unread is '0'
-    #console.log 'No unread'
     widget.contentURL = data.url 'images/icon_unread19.png'
-    #widget.width = 16
   else
     widget.contentURL = data.url 'images/icon19.png'
-    #console.log "#{unread} unread"
-    #widget.contentURL = data.url 'badgeWidget.html'
-    #widget.port.emit 'receiveBadgeCount', unread
-    #widget.width = 100
+
+popup.port.on 'notification', (notify) ->
+  if notify.count is 1
+    notifications.notify
+      title: "New article on OMG! Ubuntu!"
+      text: notify.title
+      iconURL: data.url 'images/icon48.png'
+  else if notify.count > 1
+    notifications.notify
+        title: "New articles on OMG! Ubuntu!"
+        text: "#{notify.count} new articles"
+        iconURL: data.url 'images/icon48.png'
+
+
+
