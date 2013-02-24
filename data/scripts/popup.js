@@ -167,11 +167,13 @@ under the License.
             promises.push(addArticle);
           }
           return $q.all(promises).then(function(article) {
-            self.port.emit('notification', {
-              count: LocalStorage.get(),
-              title: article[0].title,
-              link: article[0].link
-            });
+            if (~~LocalStorage.get() > 0 && typeof article[0] !== 'undefined') {
+              self.port.emit('notification', {
+                count: LocalStorage.get(),
+                title: article[0].title,
+                link: article[0].link
+              });
+            }
             return deferred.resolve();
           });
         });

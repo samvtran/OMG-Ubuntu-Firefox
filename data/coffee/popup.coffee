@@ -115,10 +115,11 @@ omgUtil.service 'Articles', ['$q', '$rootScope', 'LocalStorage', 'databaseServic
         addArticle = _addArticle(articleObj)
         promises.push addArticle
       $q.all(promises).then (article) ->
-        self.port.emit 'notification',
-          count: LocalStorage.get()
-          title: article[0].title
-          link: article[0].link
+        if ~~LocalStorage.get() > 0 && typeof article[0] != 'undefined'
+          self.port.emit 'notification',
+            count: LocalStorage.get()
+            title: article[0].title
+            link: article[0].link
         deferred.resolve()
     deferred.promise
 
