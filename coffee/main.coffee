@@ -1,5 +1,5 @@
 ###
-Copyright (C) 2012 Ohso Ltd
+Copyright (C) 2013 Ohso Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@ under the License.
 ###
 'use strict'
 widgets = require 'widget'
-buttons = require 'toolbarbutton'
 tabs = require 'tabs'
 self = require 'self'
+preferences = require 'simple-prefs'
 data = require('self').data
 request = require('request').Request
 notifications = require 'sdk/notifications'
@@ -32,12 +32,6 @@ popup = require('panel').Panel
     data.url 'scripts/angular-resource.min.js'
     data.url 'scripts/popup.js'
   ]
-
-# button = buttons.ToolbarButton
-#   id: 'omg-button'
-#   label: 'OMG! Ubuntu!'
-#   image: data.url 'images/icon24.png'
-#   panel: popup
 
 widget = widgets.Widget
   id: 'omg-bubble'
@@ -59,6 +53,7 @@ popup.port.on 'updateBadge', (unread) ->
     widget.contentURL = data.url 'images/icon19.png'
 
 popup.port.on 'notification', (notify) ->
+  unless preferences.prefs.notificationsEnabled then return
   if notify.count is 1
     notifications.notify
       title: "New article on OMG! Ubuntu!"

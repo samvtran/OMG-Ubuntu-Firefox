@@ -1,4 +1,4 @@
-/*! Copyright (C) 2012 Ohso Ltd
+/*! Copyright (C) 2013 Ohso Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ a:hover {
       }
       .social-links {
         float: right;
-        font-size: 20px;
+        font-size: 16px;
         line-height: 12px;
         a {
           text-decoration: none;
@@ -109,6 +109,7 @@ a:hover {
         a:hover { opacity: 0.8 }
         .icon-facebook-sign { color: #3b5998 }
         .icon-twitter-sign { color: #00a0d1 }
+        .icon-google-plus-sign { color: #cc3732 }
       }
     }
   }

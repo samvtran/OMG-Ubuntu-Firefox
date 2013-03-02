@@ -2,9 +2,18 @@
   "id": "omgubuntufirefox@omgubuntu.co.uk",
   "name": "omg_ubuntu",
   "license": "Apache 2.0",
-  "author": "Ohso",
-  "version": "0.1",
-  "fullName": "OMG! Ubuntu! Firefox Extension",
-  "description": "a basic add-on",
-  "dependencies": ["toolbarbutton"]
+  "author": "Ohso Ltd.",
+  "homepage": "http://www.omgubuntu.co.uk/apps",
+  "version": "1.0",
+  "icon": "data/images/icon48.png",
+  "icon64": "data/images/icon64.png",
+  "fullName": "OMG! Ubuntu!",
+  "description": "The official OMG! Ubuntu! Firefox add-on.\n\nStay up to date with the latest Ubuntu news and developments.\n\nThe OMG! Ubuntu! add-on adds a button that displays an orange bubble when new items appear on the site and displays a pop-up notification bubble &ndash; though this can be turned off in from the add-on's entry in the Add-ons Manager.\n\nClick the OMG! logo to view scrollable, drop-down menu with the latest posts from OMG! Ubuntu!.\n\nUnread items have a red 'bookmark' logo to the left. To mark all posts as a read click the 'Mark All As Read' text at the bottom the add-on window.\n\nTo read an item just click its title to go straight to the post on OMG! Ubuntu!.\n\nTo share an item on Twitter or Facebook just click one of the social icons to the right of the post.",
+  "preferences": [{
+      "name": "notificationsEnabled",
+      "title": "Enable Notifications",
+      "description": "Show or hide notifications that pop up when new articles arrive.\nNOTE: This feature requires Growl or Hiss on OS X.",
+      "type": "bool",
+      "value": true
+    }]
 }
